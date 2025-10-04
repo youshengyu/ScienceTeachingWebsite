@@ -35,6 +35,26 @@
         .content-section {
             display: none;
         }
+        .pdf-gallery {
+            display: flex;             /* 啟用彈性佈局 */
+            flex-wrap: wrap;           /* 允許項目換行 */
+            justify-content: flex-start; /* 項目從左側開始排列 */
+            gap: 20px;                 /* 項目之間的間距 */
+        }
+
+        /* 2. 控制單個項目的寬度 */
+        .pdf-item {
+            /* 讓單個項目在所有項目中佔據約 20% 的空間 */
+            /* 100% / 5 = 20%。減去一點邊界，確保一行能放下五個 */
+            flex-basis: calc(20% - 16px); 
+            box-sizing: border-box;    /* 確保 padding/border 不影響寬度計算 */
+            margin-bottom: 20px;       /* 項目底部的間距 */
+        }
+
+        /* 3. 確保嵌入的 PDF 填滿容器 */
+        .pdf-item embed {
+            display: block;
+        }
         /* 讓首頁預設顯示的區塊 (例如 國中數學) 可以在 JS 載入前先顯示 */
         #juniormath {
             display: block; 
@@ -183,6 +203,7 @@
 </script>
 </body>
 </html>
+
 
 
 
