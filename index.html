@@ -60,20 +60,6 @@
         }
 </head>
 <body>
-    <script>
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']] // 確保 MathJax 知道要解析單個 $ 符號
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
-</script>
-        <script type="text/javascript" id="MathJax-script" async
-         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-        </script>
-    </style>
     
     <header>
         <a href="#" onclick="showSection('juniormath', true); return false;" style="text-decoration: none; color: inherit;">
@@ -387,8 +373,23 @@ window.MathJax = {
         }
     });
 </script>
+        <script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']] // 確保 MathJax 知道要解析單個 $ 符號
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+        <script type="text/javascript" id="MathJax-script" async
+         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+    </style>
 </body>
 </html>
+
 
 
 
