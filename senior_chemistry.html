@@ -1,6 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
-<title>國高中數理化教學網 - 高中化學</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中化學資源|國高中數理化教學網</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        header {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: blue;
+        }
+        .content {
+            padding: 20px 0;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        .pdf-section, .question-section, .content-section {
+            border: 1px solid #ccc; /* 在子頁面中，這用於包裹內容 */
+            padding: 15px;
+            margin-bottom: 20px;
+            display: block !important; /* 子頁面全部預設顯示 */
+        }
+        .pdf-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 20px;
+        }
+
+        .pdf-item {
+            flex-basis: calc(25% - 15px);
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        .pdf-item embed {
+            display: block;
+        }
+    </style>
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']] 
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
 </head>
 <body>
     <header>
