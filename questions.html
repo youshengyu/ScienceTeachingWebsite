@@ -58,6 +58,49 @@
     <script type="text/javascript" id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
+    <script>
+        function wrapPdfItemsWithLink() {
+            // 找到所有 class 為 pdf-item 的區塊
+            const pdfItems = document.querySelectorAll('.pdf-item');
+
+            pdfItems.forEach(item => {
+                // 檢查是否已經有 <a> 標籤，避免重複包裹
+                if (item.querySelector('a')) {
+                    return; 
+                }
+
+                // 找到 embed 標籤以取得 PDF 檔案路徑
+                const embed = item.querySelector('embed');
+                if (embed) {
+                    const pdfSrc = embed.getAttribute('src');
+
+                    // 創建一個新的 <a> 標籤
+                    const link = document.createElement('a');
+                    link.href = pdfSrc;
+                    link.target = '_blank'; // 設定在新分頁開啟
+                    
+                    // 為了維持樣式，加入繼承樣式的設定
+                    link.style.textDecoration = 'none';
+                    link.style.color = 'inherit';
+                    link.style.display = 'block';
+
+                    // 取得 item 內所有內容 (h3 和 embed)
+                    const content = Array.from(item.childNodes);
+
+                    // 將所有內容移動到新的 <a> 標籤內
+                    content.forEach(node => {
+                        link.appendChild(node);
+                    });
+
+                    // 將 item 內原本的內容替換成新的 <a> 標籤
+                    item.appendChild(link);
+                }
+            });
+        }
+
+        // 當文件載入完成後，執行此函式
+        document.addEventListener('DOMContentLoaded', wrapPdfItemsWithLink);
+    </script>
 </head>
 <body>
     <header>
