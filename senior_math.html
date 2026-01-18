@@ -44,6 +44,41 @@
         .pdf-item embed {
             display: block;
         }
+        /* 表格整體樣式 */
+.exam-table {
+    width: 80%; /* 寬度佔頁面 80% */
+    margin: 20px auto; /* 置中 */
+    border-collapse: collapse; /* 合併格線 */
+    text-align: center; /* 文字置中 */
+}
+
+.exam-table th, .exam-table td {
+    border: 2px solid #555; /* 深灰色格線 */
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* 標頭顏色 */
+.exam-table th {
+    background-color: #f9f9f9;
+}
+
+/* 課綱標題欄位 */
+.syllabus-header {
+    background-color: #fff;
+    font-weight: bold;
+    width: 20%;
+}
+
+/* 連結樣式 */
+.exam-table a {
+    color: #007bff; /* 經典藍色字體 */
+    text-decoration: none; /* 移除底線，若想要底線可改為 underline */
+}
+
+.exam-table a:hover {
+    text-decoration: underline; /* 滑鼠移上去顯示底線 */
+}
     </style>
     <script>
     window.MathJax = {
@@ -84,6 +119,62 @@
                 <h3>高中數學公式</h3>
                 <embed src="高中數學公式總整理.pdf" type="application/pdf" width="100%" height="700px" title="高中數學公式總整理">
             </div>
+            <div class="exam-section">
+    <h3 style="text-align: center;">學測試題詳解總整理</h3>
+    <table class="exam-table">
+        <thead>
+            <tr>
+                <th>課綱</th>
+                <th>數學A</th>
+                <th>數學B</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="6" class="syllabus-header">108課綱</td>
+                <td><a href="114學測數A詳解.pdf" target="_blank">114學測數A詳解</a></td>
+                <td><a href="114學測數B詳解.pdf" target="_blank">114學測數B詳解</a></td>
+            </tr>
+            <tr>
+                <td><a href="113學測數A詳解.pdf" target="_blank">113學測數A詳解</a></td>
+                <td><a href="113學測數B詳解.pdf" target="_blank">113學測數B詳解</a></td>
+            </tr>
+            <tr>
+                <td><a href="112學測數A詳解.pdf" target="_blank">112學測數A詳解</a></td>
+                <td><a href="112學測數B詳解.pdf" target="_blank">112學測數B詳解</a></td>
+            </tr>
+            <tr>
+                <td><a href="111學測數A詳解.pdf" target="_blank">111學測數A詳解</a></td>
+                <td><a href="111學測數B詳解.pdf" target="_blank">111學測數B詳解</a></td>
+            </tr>
+            <tr>
+                <td><a href="110試辦學測數A詳解.pdf" target="_blank">110試辦學測數A詳解</a></td>
+                <td><a href="110試辦學測數B詳解.pdf" target="_blank">110試辦學測數B詳解</a></td>
+            </tr>
+            <tr>
+                <td><a href="111數A參考試卷詳解.pdf" target="_blank">111數A參考試卷詳解</a></td>
+                <td><a href="111數B參考試卷詳解.pdf" target="_blank">111數B參考試卷詳解</a></td>
+            </tr>
+
+            <tr>
+                <td rowspan="5" class="syllabus-header">103課綱微調</td>
+                <td colspan="2"><a href="110學測數學詳解.pdf" target="_blank">110學測數學詳解</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="109學測數學詳解.pdf" target="_blank">109學測數學詳解</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="108學測數學詳解.pdf" target="_blank">108學測數學詳解</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="107學測數學詳解.pdf" target="_blank">107學測數學詳解</a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><a href="106學測數學詳解.pdf" target="_blank">106學測數學詳解</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
             <hr>
         </div>
     </div>
