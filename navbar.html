@@ -1,0 +1,53 @@
+<style>
+    header {
+        background-color: #f0f0f0;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    header h1 {
+        margin: 0 0 10px 0;
+        font-size: 24px;
+        color: #333;
+    }
+
+    nav {
+        margin-top: 10px;
+    }
+
+    nav a {
+        margin: 0 12px;
+        text-decoration: none;
+        color: blue; /* 預設藍色字體 */
+        font-size: 16px;
+        padding-bottom: 5px;
+        transition: color 0.3s;
+    }
+
+    nav a:hover {
+        color: #cc0000; /* 滑鼠移上去變紅色 */
+    }
+
+    /* 這是給 JavaScript 用來標記當前頁面的樣式 */
+    .current-page {
+        color: #cc0000 !important;
+        font-weight: bold;
+        border-bottom: 2px solid #cc0000;
+    }
+</style>
+
+<header>
+    <a href="index.html" style="text-decoration: none; color: inherit;">
+        <h1>國高中數理化教學網站</h1>
+    </a>
+    <nav>
+        <a href="junior_math.html">國中數學資源</a>
+        <a href="junior_pc.html">國中理化資源</a>
+        <a href="senior_math.html">高中數學資源</a>
+        <a href="senior_physics.html">高中物理資源</a>
+        <a href="senior_chemistry.html">高中化學資源</a>
+        <a href="questions.html">每日一題</a>
+        <a href="exam_questions.html">各校段考題</a> <a href="about.html">關於我</a>
+    </nav>
+</header>
