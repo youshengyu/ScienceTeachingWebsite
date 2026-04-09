@@ -5,28 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>國高中數理化教學網 - 首頁</title>
     <style>
-        /* 保持您原本的 CSS 樣式 ... */
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        .content { padding: 20px 0; max-width: 1500px; margin: 0 auto; }
+        /* 基本佈局設定 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4; /* 稍微深一點的底色，突顯白色框框 */
+        }
         
-        /* 統一使用白色框框樣式 */
-        .content-section {
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .content {
+            padding: 20px 0;
+            max-width: 1500px; 
+            margin: 0 auto; 
         }
 
-        .pdf-gallery { display: flex; flex-wrap: wrap; gap: 20px; }
-        .pdf-item { flex-basis: calc(25% - 15px); box-sizing: border-box; }
+        /* 統一的白色框框容器樣式 */
+        .content-section {
+            background-color: white; /* 背景白色 */
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 加入與表格一致的陰影感 */
+            display: block; 
+        }
+
+        .section-title {
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* 每日一題 PDF 畫廊樣式 */
+        .pdf-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start; 
+            gap: 20px; 
+        }
+
+        .pdf-item {
+            flex-basis: calc(25% - 15px); 
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        
+        /* 讓滑鼠移到可點擊的 PDF 區塊時顯示手指符號 */
+        .pdf-clickable {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .pdf-clickable:hover {
+            transform: scale(1.02);
+        }
+
+        .pdf-item embed {
+            display: block;
+            pointer-events: none; /* 讓點擊穿透 embed 觸發 a 標籤 */
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+        }
     </style>
 
     <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-            svg: { fontCache: 'global' }
-        };
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']] 
+        },
+        svg: {
+            fontCache: 'global'
+        }
+    };
     </script>
     <script type="text/javascript" id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
@@ -37,14 +88,16 @@
     <div id="navbar-container"></div>
 
     <div class="content">
+        
         <div id="juniormath" class="content-section">
             <h2 class="section-title">國中數學資源</h2> 
             <p>這裡是國中數學課程介紹、連結或 PDF 的地方。</p>
-            <p>→ 點擊上方連結進入完整國中數學資源頁面。</p>
+            <p>→ 點擊上方導覽列進入<strong>完整</strong>國中數學資源頁面。</p>
+            
             <div class="math-problem">
                 <h3>範例題目：數線與絕對值</h3>
                 <p>已知數線上有 A、B 兩點，分別表示數字 -5 和 3。若 C 點在 A、B 之間，且 AC : BC = 2 : 1，請問 C 點所代表的數是多少？</p>
-                <hr>
+                <hr style="border-top: 1px solid #ddd; margin: 15px 0;">
                 <h4>解答</h4>
                 <div class="solution">
                     <p>1. 計算 A、B 之間的距離：$|3 - (-5)| = 8$。</p>
@@ -55,8 +108,41 @@
             </div>
         </div>
         
+        <div id="juniorpc" class="content-section">
+            <h2 class="section-title">國中理化資源</h2> 
+            <p>→ 點擊上方連結進入<strong>完整</strong>國中理化資源頁面。</p>
+            <div class="pdf-item">
+                <h3>國中理化公式、重點總整理 (預覽)</h3>
+                <embed src="國中理化公式、重點總整理.pdf" type="application/pdf" width="100%" height="500px">
+            </div>
+        </div>
+        
+        <div id="math" class="content-section">
+            <h2 class="section-title">高中數學資源</h2>
+            <p>→ 點擊上方連結進入<strong>完整</strong>高中數學資源頁面。</p>
+            <div class="pdf-item">
+                <h3>高中數學公式 (預覽)</h3>
+                <embed src="高中數學公式總整理.pdf" type="application/pdf" width="100%" height="500px">
+            </div>
+        </div>
+
+        <div id="physics" class="content-section">
+            <h2 class="section-title">高中物理資源</h2> 
+            <p>→ 點擊上方連結進入<strong>完整</strong>高中物理資源頁面。</p>
+            <div class="pdf-item">
+                <h3>高中物理公式 (預覽)</h3>
+                <embed src="高中物理公式整理.pdf" type="application/pdf" width="100%" height="500px">
+            </div>
+        </div>
+        
+        <div id="chemistry" class="content-section">
+            <h2 class="section-title">高中化學資源</h2>
+            <p>此區塊目前更新中，敬請期待。</p>
+        </div>
+        
         <div id="questions" class="content-section">
             <h2 class="section-title">每日一題</h2>
+            <p>每日精選數理化題目，歡迎挑戰！點擊下方預覽圖可開啟完整 PDF。</p>
             <div class="pdf-gallery">
                 <div class="pdf-item"><h3>每日一題 01</h3><embed src="每日一題01.pdf" type="application/pdf" width="100%" height="350px"></div>
                 <div class="pdf-item"><h3>每日一題 02</h3><embed src="每日一題02.pdf" type="application/pdf" width="100%" height="350px"></div>
@@ -64,6 +150,7 @@
                 <div class="pdf-item"><h3>每日一題 04</h3><embed src="每日一題04.pdf" type="application/pdf" width="100%" height="350px"></div>
             </div>
         </div>
+        
     </div>
 
     <footer>
@@ -71,7 +158,7 @@
     </footer>
 
     <script>
-        // 載入導航列
+        // 1. 自動載入 navbar.html
         async function loadNavbar() {
             try {
                 const response = await fetch('navbar.html');
@@ -79,11 +166,11 @@
                 document.getElementById('navbar-container').innerHTML = html;
                 markCurrentPage();
             } catch (error) {
-                console.error('載入導航列失敗，請檢查 navbar.html 是否存在。', error);
+                console.error('導航列載入失敗:', error);
             }
         }
 
-        // 標記當前選單
+        // 2. 標記當前選單項目的顏色
         function markCurrentPage() {
             const path = window.location.pathname.split('/').pop() || 'index.html';
             const links = document.querySelectorAll('nav a');
@@ -91,25 +178,29 @@
                 if (link.getAttribute('href') === path) {
                     link.style.color = '#cc0000';
                     link.style.fontWeight = 'bold';
+                    link.style.borderBottom = '2px solid #cc0000';
                 }
             });
         }
 
-        // 自動讓 PDF 點擊後在新分頁開啟
-        function wrapPdfItems() {
-            const pdfItems = document.querySelectorAll('.pdf-item, .pdf-section');
+        // 3. 自動化 PDF 點擊開啟功能：將所有 pdf-item 內的內容用 <a> 包裹
+        function wrapPdfWithLinks() {
+            const pdfItems = document.querySelectorAll('.pdf-item');
             pdfItems.forEach(item => {
                 const embed = item.querySelector('embed');
-                if (embed && !item.querySelector('a')) {
+                if (embed) {
                     const pdfSrc = embed.getAttribute('src');
-                    // 建立連結
+                    
+                    // 創建超連結
                     const link = document.createElement('a');
                     link.href = pdfSrc;
                     link.target = '_blank';
+                    link.className = 'pdf-clickable';
                     link.style.textDecoration = 'none';
                     link.style.color = 'inherit';
-                    
-                    // 把原本 item 的內容搬進連結
+                    link.style.display = 'block';
+
+                    // 搬移內容
                     while (item.firstChild) {
                         link.appendChild(item.firstChild);
                     }
@@ -118,10 +209,10 @@
             });
         }
 
-        // 執行所有自動化功能
-        window.onload = () => {
+        // 頁面載入後執行
+        window.onload = function() {
             loadNavbar();
-            wrapPdfItems();
+            wrapPdfWithLinks();
         };
     </script>
 </body>
