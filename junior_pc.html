@@ -1,50 +1,61 @@
 <!DOCTYPE html>
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>國中理化資源 | 國高中數理化教學網</title>
     <style>
+        /* 1. 基礎佈局與背景色 */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-        }
-        header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: blue;
-        }
-        .content {
-            padding: 20px 0;
-            max-width: 1500px;
-            margin: 0 auto;
-        }
-        .pdf-section, .question-section, .content-section {
-            border: 1px solid #ccc; /* 在子頁面中，這用於包裹內容 */
-            padding: 15px;
-            margin-bottom: 20px;
-            display: block !important; /* 子頁面全部預設顯示 */
-        }
-        .pdf-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            gap: 20px;
+            background-color: #f4f4f4; /* 淺灰色底色 */
         }
 
-        .pdf-item {
-            flex-basis: calc(25% - 15px);
-            box-sizing: border-box;
-            margin-bottom: 20px;
+        .content {
+            padding: 20px 0;
+            max-width: 1500px; /* 統一寬度 1500px */
+            margin: 0 auto;
         }
-        .pdf-item embed {
-            display: block;
+
+        /* 2. 白色框框容器樣式 (卡片感) */
+        .content-section {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: block !important;
+        }
+
+        /* 3. 標題樣式修改 */
+        .section-title {
+            border-bottom: 3px solid #333; /* 大標題底線 */
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        /* PDF 區塊的小標題：文字黑色，左側保留紅線樣式 */
+        .pdf-section h3 {
+            color: #333; 
+            border-left: 5px solid #cc0000;
+            padding-left: 10px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .pdf-section {
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
         }
     </style>
+
     <script>
     window.MathJax = {
         tex: {
@@ -60,36 +71,61 @@
     </script>
 </head>
 <body>
-    <header>
-        <a href="index.html" style="text-decoration: none; color: inherit;">
-            <h1>國高中數理化教學網站</h1>
-        </a>
-        <nav>
-            <a href="index.html">返回首頁</a>
-        <a href="junior_math.html">國中數學資源</a>
-        <a href="senior_math.html">高中數學資源</a>
-        <a href="senior_physics.html">高中物理資源</a>
-        <a href="senior_chemistry.html">高中化學資源</a>
-        <a href="questions.html">每日一題</a>
-        <a href="exam_questions.html">各校段考題</a>    
-        <a href="about.html">關於我</a>
-     
-        </nav>
-        </header>
+
+    <div id="navbar-container"></div>
 
     <div class="content">
         <div id="juniorpc" class="content-section">
             <h2 class="section-title">國中理化資源</h2>
-            <p>這裡是國中理化課程介紹、連結或 PDF 的地方。</p>
+            <p style="color: #666;">這裡是國中理化課程介紹、連結或 PDF 的地方。</p>
+            
             <div class="pdf-section">
                 <h3>國中理化公式、重點總整理</h3>
-                <embed src="國中理化公式、重點總整理.pdf" type="application/pdf" width="100%" height="700px" title="國中理化公式、重點總整理">
+                <embed src="國中理化公式、重點總整理.pdf" type="application/pdf" width="100%" height="800px" title="國中理化公式、重點總整理">
             </div>
-            <hr>
+            
+            <hr style="margin: 30px 0; border: 0; border-top: 1px dashed #ccc;">
         </div>
     </div>
+
     <footer>
         <p style="text-align: center;">&copy; 2025 數理化教學網</p>
     </footer>
+
+    <script>
+        async function loadNavbar() {
+            try {
+                // 讀取外部的 navbar.html
+                const response = await fetch('navbar.html');
+                const html = await response.text();
+                document.getElementById('navbar-container').innerHTML = html;
+                
+                // 執行標記紅字的功能
+                markCurrentPage();
+            } catch (error) {
+                console.error('導航列載入失敗:', error);
+            }
+        }
+
+        function markCurrentPage() {
+            // 取得目前檔案名稱 (例如: junior_pc.html)
+            const path = window.location.pathname.split('/').pop() || 'index.html';
+            const links = document.querySelectorAll('nav a');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === path) {
+                    // 設定紅字加粗樣式
+                    link.style.color = '#cc0000';
+                    link.style.fontWeight = 'bold';
+                    link.style.borderBottom = '2px solid #cc0000';
+                }
+            });
+        }
+
+        // 頁面載入完成後啟動
+        window.onload = loadNavbar;
+    </script>
+
 </body>
 </html>
