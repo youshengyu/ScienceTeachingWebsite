@@ -5,107 +5,149 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>關於我 | 國高中數理化教學網</title>
     <style>
+        /* 1. 基礎佈局設定：與段考題、首頁版型一致 */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f4; /* 淺灰色底色 */
         }
-        header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: blue;
-        }
+
         .content {
             padding: 20px 0;
-            max-width: 1200px; /* 與主頁寬度保持一致 */
+            max-width: 1500px; /* 調寬至 1500px 與各校段考題一致 */
             margin: 0 auto; 
         }
-        .about-info {
-            line-height: 1.8;
-            padding: 20px;
-            border: 1px solid #ccc;
+
+        /* 2. 白色框框容器樣式：與段考題表格的背景質感一致 */
+        .content-section {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 加入陰影感 */
         }
-        .about-info h2 {
-            border-bottom: 2px solid #333;
+
+        h1.page-title {
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #333;
             padding-bottom: 10px;
         }
+
+        .about-info {
+            line-height: 1.8;
+        }
+
         .info-section {
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
+
+        .info-section h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-section li {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 4px solid #cc0000; /* 加入側邊裝飾線增加專業感 */
+        }
+
         .info-section strong {
-            display: block;
+            color: #333;
             font-size: 1.1em;
-            margin-bottom: 5px;
-            color: #555;
         }
-        
-        h2.section-title { border-bottom: 2px solid #333; padding-bottom: 10px; }
+
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="index.html" style="text-decoration: none; color: inherit;">
-            <h1>國高中數理化教學網站</h1>
-        </a>
-        <nav>
-            <a href="index.html">返回首頁</a>
-        <a href="junior_math.html">國中數學資源</a>
-        <a href="junior_pc.html">國中理化資源</a>
-        <a href="senior_math.html">高中數學資源</a>
-        <a href="senior_physics.html">高中物理資源</a>
-        <a href="senior_chemistry.html">高中化學資源</a>
-        <a href="exam_questions.html">各校段考題</a>    
-        <a href="questions.html">每日一題</a>
-        <a href="about.html">關於我</a>    
-        
-        </nav>
-    </header>
+    <div id="navbar-container"></div>
 
     <div class="content">
-        <h1>關於我</h1>
-        
-        <div class="about-info">
+        <div class="content-section">
+            <h1 class="page-title">關於我</h1>
+            
+            <div class="about-info">
 
-            <div class="info-section">
-                <h2>學歷與專業背景</h2>
-                <ul>
-                    <li><strong>碩士：</strong> 國立臺灣師範大學物理學系</li> 
-                    
-                    <li><strong>學士：</strong> 東吳大學數學系雙主修物理學系</li>
-                    
-                    <li><strong>專業領域：</strong> 國中數學、國中理化、高中數學、高中物理&化學</li>
-                </ul>
-            </div>
+                <div class="info-section">
+                    <h2>學歷與專業背景</h2>
+                    <ul>
+                        <li><strong>碩士：</strong> 國立臺灣師範大學物理學系</li> 
+                        <li><strong>學士：</strong> 東吳大學數學系（雙主修物理學系）</li>
+                        <li><strong>專業領域：</strong> 國中數學、國中理化、高中數學、高中物理 & 化學</li>
+                    </ul>
+                </div>
 
-            <div class="info-section">
-                <h2>教學經歷</h2>
-                <ul>
-                    <li>2017/9 - 2018/9：飛凡文理補習班 輔導老師</li>
-                    <li>2018/9 - 2019/6：王耀數學 工讀生</li>
-                    <li>2022/9 - 2022/12、2023/9 - 2023/12：臺師大物理學系 計算物理(一) 教學助理</li>
-                    <li>2019/7 - 至今：明光義塾海山教室 講師，主授 國高中數理科</li>
-                </ul>
-            </div>
+                <div class="info-section">
+                    <h2>教學經歷</h2>
+                    <ul>
+                        <li><strong>2017/9 - 2018/9：</strong> 飛凡文理補習班 輔導老師</li>
+                        <li><strong>2018/9 - 2019/6：</strong> 王耀數學 工讀生</li>
+                        <li><strong>2022/9 - 2023/12：</strong> 臺師大物理學系 計算物理(一) 教學助理</li>
+                        <li><strong>2019/7 - 至今：</strong> 明光義塾海山教室 講師（主授國高中數理科）</li>
+                    </ul>
+                </div>
 
-            <div class="info-section">
-                <h2>我的教育理念</h2>
-                <p>
-                    [在這裡詳細說明你的教育觀點，例如：]
-                    我相信數理化學習不只是背誦公式，而是培養邏輯思考與解決問題的能力。我的教學目標是透過視覺化與生活實例，幫助學生真正理解科學原理，而不是死記硬背。希望透過這個網站，讓更多的學生能夠輕鬆掌握數理科學的樂趣與知識，打下堅實的學術基礎。
-                </p>
+                <div class="info-section">
+                    <h2>我的教育理念</h2>
+                    <p style="text-indent: 2em; color: #444;">
+                        我相信數理化學習不只是背誦公式，而是培養邏輯思考與解決問題的能力。我的教學目標是透過視覺化與生活實例，幫助學生真正理解科學原理，而不是死記硬背。希望透過這個網站，讓更多的學生能夠輕鬆掌握數理科學的樂趣與知識，打下堅實的學術基礎。
+                    </p>
+                </div>
             </div>
         </div>
-
     </div>
 
     <footer>
         <p style="text-align: center;">&copy; 2025 數理化教學網</p>
     </footer>
+
+    <script>
+        async function loadNavbar() {
+            try {
+                // 讀取外部的 navbar.html
+                const response = await fetch('navbar.html');
+                const html = await response.text();
+                document.getElementById('navbar-container').innerHTML = html;
+                
+                // 執行標記紅字的功能
+                markCurrentPage();
+            } catch (error) {
+                console.error('導航列載入失敗:', error);
+            }
+        }
+
+        function markCurrentPage() {
+            // 取得目前檔案名稱 (例如: about.html)
+            const path = window.location.pathname.split('/').pop() || 'index.html';
+            const links = document.querySelectorAll('nav a');
+            
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === path) {
+                    // 設定與您截圖中一樣的紅字樣式
+                    link.style.color = '#cc0000';
+                    link.style.fontWeight = 'bold';
+                    link.style.borderBottom = '2px solid #cc0000';
+                }
+            });
+        }
+
+        // 當頁面載入完成時執行
+        window.onload = loadNavbar;
+    </script>
 
 </body>
 </html>
