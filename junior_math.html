@@ -1,34 +1,49 @@
 <!DOCTYPE html>
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>國中數學資源 | 國高中數理化教學網</title>
     <style>
+        /* 1. 基礎佈局與背景色（與全站同步） */
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f4; /* 淺灰色底色 */
         }
-        header {
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: blue;
-        }
+
         .content {
             padding: 20px 0;
-            max-width: 1500px;
+            max-width: 1500px; /* 統一寬度 */
             margin: 0 auto;
         }
-        .pdf-section, .question-section, .content-section {
-            border: 1px solid #ccc; /* 在子頁面中，這用於包裹內容 */
-            padding: 15px;
-            margin-bottom: 20px;
-            display: block !important; /* 子頁面全部預設顯示 */
+
+        /* 2. 白色框框容器樣式（陰影卡片感） */
+        .content-section {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: block !important;
         }
+
+        /* 3. 標題樣式修改 */
+        .section-title {
+            border-bottom: 3px solid #333; /* 加粗底線 */
+            padding-bottom: 10px;
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .math-problem h3 {
+            color: #cc0000; /* 題目小標題顏色 */
+            border-left: 5px solid #cc0000;
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+
+        /* 其他原本的 PDF 與樣式保留 */
         .pdf-gallery {
             display: flex;
             flex-wrap: wrap;
@@ -41,10 +56,8 @@
             box-sizing: border-box;
             margin-bottom: 20px;
         }
-        .pdf-item embed {
-            display: block;
-        }
     </style>
+
     <script>
     window.MathJax = {
         tex: {
@@ -60,21 +73,8 @@
     </script>
 </head>
 <body>
-    <header>
-        <a href="index.html" style="text-decoration: none; color: inherit;">
-            <h1>國高中數理化教學網站</h1>
-        </a>
-        <nav>
-        <a href="index.html">返回首頁</a>
-        <a href="junior_pc.html">國中理化資源</a>
-        <a href="senior_math.html">高中數學資源</a>
-        <a href="senior_physics.html">高中物理資源</a>
-        <a href="senior_chemistry.html">高中化學資源</a>
-        <a href="questions.html">每日一題</a>
-        <a href="exam_questions.html">各校段考題</a>    
-        <a href="about.html">關於我</a>
-        </nav>
-        </header>
+
+    <div id="navbar-container"></div>
 
     <div class="content">
         <div id="juniormath" class="content-section">
@@ -95,7 +95,7 @@
                 </div>
             </div>
             
-            <hr style="margin: 40px 0;">
+            <hr style="margin: 40px 0; border: 0; border-top: 1px dashed #ccc;">
             
             <div class="math-problem">
                 <h3>第二題：一元一次方程式</h3>
@@ -110,11 +110,38 @@
                     <p><strong>答案：</strong> $x = 4$。</p>
                 </div>
             </div>
-            <hr>
         </div>
     </div>
+
     <footer>
-        <p style="text-align: center;">&copy; 2025 數理化教學網</p>
+        <p style="text-align: center; color: #666;">&copy; 2025 數理化教學網</p>
     </footer>
+
+    <script>
+        async function loadNavbar() {
+            try {
+                const response = await fetch('navbar.html');
+                const html = await response.text();
+                document.getElementById('navbar-container').innerHTML = html;
+                markCurrentPage();
+            } catch (error) {
+                console.error('導航列載入失敗:', error);
+            }
+        }
+
+        function markCurrentPage() {
+            const path = window.location.pathname.split('/').pop() || 'index.html';
+            const links = document.querySelectorAll('nav a');
+            links.forEach(link => {
+                if (link.getAttribute('href') === path) {
+                    link.style.color = '#cc0000';
+                    link.style.fontWeight = 'bold';
+                    link.style.borderBottom = '2px solid #cc0000';
+                }
+            });
+        }
+
+        window.onload = loadNavbar;
+    </script>
 </body>
 </html>
