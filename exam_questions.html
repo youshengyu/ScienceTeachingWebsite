@@ -14,7 +14,7 @@
 
         .content {
             padding: 20px 0;
-            max-width: 1500px; /* 統一改為 1500px */
+            max-width: 1500px; /* 統一頁面寬度 */
             margin: 0 auto;
         }
 
@@ -44,22 +44,25 @@
             margin-bottom: 25px;
         }
 
-        /* 4. 學校連結列表樣式 (優化 Grid 佈局) */
+        /* 4. 學校連結列表樣式 - 調整框框更貼合文字並置中 */
         .school-list {
             list-style: none;
             padding: 0;
             display: grid;
-            /* 在 1500px 下自動填充，最小寬度 250px */
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
+            /* 調整最小寬度至 150px，讓短校名的框框不會顯得太寬 */
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
         }
 
         .school-list li {
             background: #f9f9f9;
-            padding: 12px 15px;
+            /* 縮減內邊距：上下 6px，左右 12px，使框框貼近文字 */
+            padding: 6px 12px; 
             border-radius: 4px;
             border: 1px solid #eee;
             transition: 0.3s;
+            /* 讓文字在框框內水平置中 */
+            text-align: center; 
         }
 
         .school-list li:hover {
@@ -73,7 +76,8 @@
             color: #0056b3;
             text-decoration: none;
             font-size: 1.05em;
-            display: block; /* 讓整個格子都可以點擊 */
+            display: block; /* 讓整個灰色區塊都可點擊 */
+            width: 100%;
         }
 
         .school-list li a:hover {
@@ -111,14 +115,14 @@
             <ul class="school-list">
                 <li><a href="http://120.102.232.21/nss/p/218" target="_blank">海山國中</a></li>
                 <li><a href="https://www.kjsh.ntpc.edu.tw/ischool/publish_page/11/?cid=324" target="_blank">光仁國中</a></li>
-                <li><a href="https://admin.csjh.ntpc.edu.tw:5001/fsdownload/ISp6ZwCWf/%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C%E4%B8%8B%E8%BC%89(%E5%90%AB%E8%A3%9C%E8%80%83%E8%87%AA%E7%84%B6%E9%A1%8C%E5%BA%AB)" target="_blank">中山國中</a></li>
+                <li><a href="https://admin.csjh.ntpc.edu.tw:5001/fsdownload/ISp6ZwCWf/%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C%E4%B8%8B%E8%BC%89" target="_blank">中山國中</a></li>
             </ul>
         </div>
 
         <div class="pdf-section">
             <h3>國小歷屆試題</h3>
             <ul class="school-list">
-                <li><a href="#" target="_blank">國教院-全國中小學題庫網</a></li>
+                <li><a href="https://web.nani.com.tw/ExamBank/" target="_blank">全國中小學題庫網</a></li>
             </ul>
         </div>
     </div>
@@ -128,6 +132,7 @@
     </footer>
 
     <script>
+        // 載入導航列並標記目前頁面
         async function loadNavbar() {
             try {
                 const response = await fetch('navbar.html');
@@ -135,7 +140,7 @@
                 document.getElementById('navbar-container').innerHTML = html;
                 markCurrentPage();
             } catch (error) { 
-                console.error('載入失敗:', error); 
+                console.error('導航列載入失敗:', error); 
             }
         }
 
