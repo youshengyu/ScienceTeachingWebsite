@@ -18,7 +18,7 @@
             margin: 0 auto;
         }
 
-        /* 2. 白色框框容器樣式 (卡片質感) */
+        /* 2. 白色框框容器樣式 */
         .pdf-section {
             background-color: white;
             border: 1px solid #ddd;
@@ -27,7 +27,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        /* 3. 標題樣式一致化 */
+        /* 3. 標題樣式 */
         h2.section-title {
             border-bottom: 3px solid #333;
             padding-bottom: 10px;
@@ -35,7 +35,6 @@
             color: #2c3e50;
         }
 
-        /* 次標題：黑色文字，左側紅線 */
         .pdf-section h3 {
             color: #333; 
             border-left: 5px solid #cc0000;
@@ -44,25 +43,43 @@
             margin-bottom: 25px;
         }
 
-        /* 4. 學校連結列表樣式 - 調整框框更貼合文字並置中 */
+        /* 縣市小標題樣式 */
+        .city-title {
+            font-size: 1.1em;
+            color: #555;
+            margin: 25px 0 12px 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .city-title::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* 4. 學校連結列表樣式 - 橫向排列並貼合文字 */
         .school-list {
             list-style: none;
             padding: 0;
-            display: grid;
-            /* 調整最小寬度至 150px，讓短校名的框框不會顯得太寬 */
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 12px;
+            margin: 0;
+            display: flex;       /* 改用 flex 讓元件橫向排列 */
+            flex-wrap: wrap;    /* 寬度不足時自動換行 */
+            gap: 10px;          /* 方塊間距 */
         }
 
         .school-list li {
             background: #f9f9f9;
-            /* 縮減內邊距：上下 6px，左右 12px，使框框貼近文字 */
             padding: 6px 12px; 
             border-radius: 4px;
             border: 1px solid #eee;
             transition: 0.3s;
-            /* 讓文字在框框內水平置中 */
-            text-align: center; 
+            text-align: center;
         }
 
         .school-list li:hover {
@@ -75,9 +92,8 @@
         .school-list li a {
             color: #0056b3;
             text-decoration: none;
-            font-size: 1.05em;
-            display: block; /* 讓整個灰色區塊都可點擊 */
-            width: 100%;
+            font-size: 1em;
+            display: block;
         }
 
         .school-list li a:hover {
@@ -90,26 +106,6 @@
             color: #666;
             text-align: center;
         }
-
-        /* 縣市小標題樣式 */
-.city-title {
-    font-size: 1.1em;
-    color: #555;
-    margin: 20px 0 10px 5px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-}
-
-.city-title::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    background-color: #ccc;
-    border-radius: 50%;
-    margin-right: 10px;
-}
     </style>
 </head>
 <body>
@@ -147,92 +143,92 @@
 
         <div class="pdf-section">
             <h3>國中歷屆試題</h3>
+            
             <div class="city-group">
-        <div class="city-title">新北市</div>
-        <ul class="school-list">
-            <ul class="school-list">
-                <li><a href="http://120.102.232.21/nss/p/218" target="_blank">新北海山國中</a></li>
-                <li><a href="https://www.kjsh.ntpc.edu.tw/ischool/publish_page/11/?cid=324" target="_blank">新北光仁國中</a></li>
-                <li><a href="https://admin.csjh.ntpc.edu.tw:5001/fsdownload/ISp6ZwCWf/%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C%E4%B8%8B%E8%BC%89" target="_blank">新北中山國中</a></li>
-                <li><a href="https://www.chjs.ntpc.edu.tw/p/405-1000-2544,c715.php?Lang=zh-tw" target="_blank">新北忠孝國中</a></li>
-                <li><a href="https://www.pcjh.ntpc.edu.tw/p/412-1000-163-1.php?Lang=zh-tw" target="_blank">新北板橋國中</a></li>
-                <li><a href="https://drive.google.com/drive/u/0/folders/1_9NmeTZeiY0GvrSjo5knWvAaUfzsE9kh" target="_blank">新北重慶國中</a></li>
-                <li><a href="https://web.ctjh.ntpc.edu.tw:5001/sharing/vXBeo2HXe" target="_blank">新北江翠國中</a></li>
-                <li><a href="https://www.ckjhs.ntpc.edu.tw/p/403-1000-194.php" target="_blank">新北溪崑國中</a></li>
-                
-                <li><a href="https://drive.google.com/drive/folders/1M2rPpBNoSnqwGg_Nx9yMsWPWu5wh32tH" target="_blank">新北土城國中</a></li>
-                <li><a href="https://www.ccjhs.ntpc.edu.tw/p/403-1000-114.php" target="_blank">新北中正國中</a></li>
-                
-                <li><a href="https://drive.google.com/drive/folders/1ZbiVyrUKexAvaIdZbSk-Jvn9cLoB3CGM" target="_blank">新北育林國中</a></li>
-                <li><a href="https://www.sdjh.ntpc.edu.tw/p/412-1000-837.php?Lang=zh-tw" target="_blank">新北三多國中</a></li>
-                <li><a href="https://www.tykjh.ntpc.edu.tw/p/426-1000-56.php" target="_blank">新北桃子腳國中</a></li>
-                
-                <li><a href="https://drive.google.com/drive/folders/1h0ReQRwmd8Va3332RgCEIPqDaojnoI0l" target="_blank">新北南勢國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1DaCpFk7XBFKHSUwx1oPHYuMRjfwFVgip" target="_blank">新北崇林國中</a></li>
-                
-                <li><a href="https://www.grjh.ntpc.edu.tw/p/412-1000-800.php" target="_blank">新北光榮國中</a></li>
-                <li><a href="https://nas.mcjh.ntpc.edu.tw/file/fsdownload/Ovn8jTqYf/%E5%AE%9A%E6%9C%9F%E8%A9%95%E9%87%8F%E9%A1%8C%E5%BA%AB" target="_blank">新北明志國中</a></li>
-                <li><a href="https://www.bhjh.ntpc.edu.tw/p/403-1000-111.php" target="_blank">新北碧華國中</a></li>
-                <li><a href="https://nas20.shjh.ntpc.edu.tw:5001/fsdownload/KZnEAy4Ro/%E6%AD%B7%E5%B1%86%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C" target="_blank">新北三和國中</a></li>
-                
-                <li><a href="https://drive.google.com/drive/folders/0B-AV45QyNaWwflFoaWFlSVdoYktEUV9LdlIwbHIwcWRCOWNuOXlHMkw0WWlsZ0pHVEY3aDA?resourcekey=0-4hQ_6IN5Ig5BvULiiR2PsA" target="_blank">新北深坑國中</a></li>
-                
-                <li><a href="https://igt.nssh.ntpc.edu.tw/podcasts/328?locale=zh_tw" target="_blank">新北南山中學</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1mVL91Rf0uaM0j2NP8reoGM4YRMe7cGH0" target="_blank">新北錦和國中</a></li>
-                <li><a href="https://www.chjh.ntpc.edu.tw/p/426-1000-27.php" target="_blank">新北漳和國中</a></li>
-                
-                <li><a href="https://www.hcjh.ntpc.edu.tw/p/403-1000-173.php" target="_blank">新北新莊國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1TGpK-GEbSrQN4SDCyiDLDMpLN1EIteMi" target="_blank">新北新泰國中</a></li>
-                <li><a href="https://www.fyjh.ntpc.edu.tw/p/412-1000-751.php?Lang=zh-tw" target="_blank">新北福營國中</a></li>
-                <li><a href="https://www.tqjh.ntpc.edu.tw/p/403-1000-127.php" target="_blank">新北頭前國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/12_U35JdeDmkHQJ8Zt6CGUnyM49nfzEWY" target="_blank">新北中平國中</a></li>
-                <li><a href="https://www.ljjh.ntpc.edu.tw/p/403-1000-107.php" target="_blank">新北鷺江國中</a></li>
-                
-                <li><a href="https://drive.google.com/drive/folders/1hcJh6StDal_wXcRSnNNkG6__g6QKv2wU" target="_blank">新北永和國中</a></li>
-                <li><a href="https://www.fhjh.ntpc.edu.tw/p/403-1000-78.php" target="_blank">新北福和國中</a></li>
-                <li><a href="https://www.lcjh.ntpc.edu.tw/p/412-1000-873.php" target="_blank">新北蘆洲國中</a></li>
-                <li><a href="https://www.hcjhs.ntpc.edu.tw/p/412-1000-126.php" target="_blank">新北汐止國中</a></li>
-                <li><a href="https://www.wfjh.ntpc.edu.tw/p/403-1000-77.php" target="_blank">新北五峰國中</a></li>
-
-                <div class="city-group">
-        <div class="city-title">臺北市</div>
-        <ul class="school-list">
-                <li><a href="https://www.hfjh.tp.edu.tw/office/div_200/section_210/%E6%AE%B5%E8%80%83%E9%A1%8C%E5%BA%AB/" target="_blank">臺北興福國中</a></li>
-                <li><a href="https://www.ccjh.tp.edu.tw/nss/p/546421" target="_blank">臺北誠正國中</a></li>
+                <div class="city-title">新北市</div>
+                <ul class="school-list">
+                    <li><a href="http://120.102.232.21/nss/p/218" target="_blank">新北海山國中</a></li>
+                    <li><a href="https://www.kjsh.ntpc.edu.tw/ischool/publish_page/11/?cid=324" target="_blank">新北光仁國中</a></li>
+                    <li><a href="https://admin.csjh.ntpc.edu.tw:5001/fsdownload/ISp6ZwCWf/%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C%E4%B8%8B%E8%BC%89" target="_blank">新北中山國中</a></li>
+                    <li><a href="https://www.chjs.ntpc.edu.tw/p/405-1000-2544,c715.php?Lang=zh-tw" target="_blank">新北忠孝國中</a></li>
+                    <li><a href="https://www.pcjh.ntpc.edu.tw/p/412-1000-163-1.php?Lang=zh-tw" target="_blank">新北板橋國中</a></li>
+                    <li><a href="https://drive.google.com/drive/u/0/folders/1_9NmeTZeiY0GvrSjo5knWvAaUfzsE9kh" target="_blank">新北重慶國中</a></li>
+                    <li><a href="https://web.ctjh.ntpc.edu.tw:5001/sharing/vXBeo2HXe" target="_blank">新北江翠國中</a></li>
+                    <li><a href="https://www.ckjhs.ntpc.edu.tw/p/403-1000-194.php" target="_blank">新北溪崑國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1M2rPpBNoSnqwGg_Nx9yMsWPWu5wh32tH" target="_blank">新北土城國中</a></li>
+                    <li><a href="https://www.ccjhs.ntpc.edu.tw/p/403-1000-114.php" target="_blank">新北中正國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1ZbiVyrUKexAvaIdZbSk-Jvn9cLoB3CGM" target="_blank">新北育林國中</a></li>
+                    <li><a href="https://www.sdjh.ntpc.edu.tw/p/412-1000-837.php?Lang=zh-tw" target="_blank">新北三多國中</a></li>
+                    <li><a href="https://www.tykjh.ntpc.edu.tw/p/426-1000-56.php" target="_blank">新北桃子腳國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1h0ReQRwmd8Va3332RgCEIPqDaojnoI0l" target="_blank">新北南勢國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1DaCpFk7XBFKHSUwx1oPHYuMRjfwFVgip" target="_blank">新北崇林國中</a></li>
+                    <li><a href="https://www.grjh.ntpc.edu.tw/p/412-1000-800.php" target="_blank">新北光榮國中</a></li>
+                    <li><a href="https://nas.mcjh.ntpc.edu.tw/file/fsdownload/Ovn8jTqYf/%E5%AE%9A%E6%9C%9F%E8%A9%95%E9%87%8F%E9%A1%8C%E5%BA%AB" target="_blank">新北明志國中</a></li>
+                    <li><a href="https://www.bhjh.ntpc.edu.tw/p/403-1000-111.php" target="_blank">新北碧華國中</a></li>
+                    <li><a href="https://nas20.shjh.ntpc.edu.tw:5001/fsdownload/KZnEAy4Ro/%E6%AD%B7%E5%B1%86%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C" target="_blank">新北三和國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/0B-AV45QyNaWwflFoaWFlSVdoYktEUV9LdlIwbHIwcWRCOWNuOXlHMkw0WWlsZ0pHVEY3aDA?resourcekey=0-4hQ_6IN5Ig5BvULiiR2PsA" target="_blank">新北深坑國中</a></li>
+                    <li><a href="https://igt.nssh.ntpc.edu.tw/podcasts/328?locale=zh_tw" target="_blank">新北南山中學</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1mVL91Rf0uaM0j2NP8reoGM4YRMe7cGH0" target="_blank">新北錦和國中</a></li>
+                    <li><a href="https://www.chjh.ntpc.edu.tw/p/426-1000-27.php" target="_blank">新北漳和國中</a></li>
+                    <li><a href="https://www.hcjh.ntpc.edu.tw/p/403-1000-173.php" target="_blank">新北新莊國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1TGpK-GEbSrQN4SDCyiDLDMpLN1EIteMi" target="_blank">新北新泰國中</a></li>
+                    <li><a href="https://www.fyjh.ntpc.edu.tw/p/412-1000-751.php?Lang=zh-tw" target="_blank">新北福營國中</a></li>
+                    <li><a href="https://www.tqjh.ntpc.edu.tw/p/403-1000-127.php" target="_blank">新北頭前國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/12_U35JdeDmkHQJ8Zt6CGUnyM49nfzEWY" target="_blank">新北中平國中</a></li>
+                    <li><a href="https://www.ljjh.ntpc.edu.tw/p/403-1000-107.php" target="_blank">新北鷺江國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1hcJh6StDal_wXcRSnNNkG6__g6QKv2wU" target="_blank">新北永和國中</a></li>
+                    <li><a href="https://www.fhjh.ntpc.edu.tw/p/403-1000-78.php" target="_blank">新北福和國中</a></li>
+                    <li><a href="https://www.lcjh.ntpc.edu.tw/p/412-1000-873.php" target="_blank">新北蘆洲國中</a></li>
+                    <li><a href="https://www.hcjhs.ntpc.edu.tw/p/412-1000-126.php" target="_blank">新北汐止國中</a></li>
+                    <li><a href="https://www.wfjh.ntpc.edu.tw/p/403-1000-77.php" target="_blank">新北五峰國中</a></li>
+                </ul>
+            </div>
 
             <div class="city-group">
-        <div class="city-title">桃園市</div>
-        <ul class="school-list">
-                <li><a href="https://www.dyjhs.tyc.edu.tw/modules/tad_uploader/index.php?of_cat_sn=3" target="_blank">桃園大有國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1BQFNJxFEFHDd76cIHCe0FjmXRJ2Cg7oD" target="_blank">桃園自強國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1tDXaKyEiP0qTIxWPaROcoR_QjfdCLjO-" target="_blank">桃園桃園國中</a></li>
+                <div class="city-title">臺北市</div>
+                <ul class="school-list">
+                    <li><a href="https://www.hfjh.tp.edu.tw/office/div_200/section_210/%E6%AE%B5%E8%80%83%E9%A1%8C%E5%BA%AB/" target="_blank">臺北興福國中</a></li>
+                    <li><a href="https://www.ccjh.tp.edu.tw/nss/p/546421" target="_blank">臺北誠正國中</a></li>
+                </ul>
+            </div>
 
             <div class="city-group">
-        <div class="city-title">臺中市</div>
-        <ul class="school-list">    
-            <li><a href="https://wcjh.tc.edu.tw/p/412-1106-9280.php" target="_blank">臺中五權國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1vK7V7tfRNuo_QtpN25txC1pqFmuupIo3" target="_blank">臺中崇德國中</a></li>
-                <li><a href="https://sites.google.com/syjhs.tc.edu.tw/2020test/%E9%A6%96%E9%A0%81" target="_blank">臺中四育國中</a></li>
-                <li><a href="https://sites.google.com/mail.dyjh.tc.edu.tw/test-memory-new/%E6%AD%B7%E5%B1%86%E8%A9%A6%E9%A1%8C%E4%B8%8B%E8%BC%89" target="_blank">臺中大業國中</a></li>
-                <li><a href="https://hsjh.tc.edu.tw/p/412-1103-8469.php" target="_blank">臺中向上國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1GtDWaM-GeRDJCt1Dv3kh2QG-X6MA8nPL" target="_blank">臺中光明國中</a></li>
+                <div class="city-title">桃園市</div>
+                <ul class="school-list">
+                    <li><a href="https://www.dyjhs.tyc.edu.tw/modules/tad_uploader/index.php?of_cat_sn=3" target="_blank">桃園大有國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1BQFNJxFEFHDd76cIHCe0FjmXRJ2Cg7oD" target="_blank">桃園自強國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1tDXaKyEiP0qTIxWPaROcoR_QjfdCLjO-" target="_blank">桃園桃園國中</a></li>
+                </ul>
+            </div>
 
             <div class="city-group">
-        <div class="city-title">高雄市</div>
-        <ul class="school-list">    
-            <li><a href="https://affairs.kh.edu.tw/5365" target="_blank">高雄五福國中</a></li>
-                <li><a href="https://affairs.kh.edu.tw/4338" target="_blank">高雄七賢國中</a></li>
-                <li><a href="http://163.16.246.199/s11/board_exam/find.asp?pyear=114" target="_blank">高雄陽明國中</a></li>
-                <li><a href="https://drive.google.com/drive/folders/1ldk6MtVSNgQi6pVODaQB0-XL3m0HkvZn" target="_blank">高雄英明國中</a></li>
-                <li><a href="https://affairs.kh.edu.tw/3850/upload/upload_list/16" target="_blank">高雄龍華國中</a></li>
-                <li><a href="https://affairs.kh.edu.tw/4567" target="_blank">高雄立德國中</a></li>
-                <li><a href="https://sites.google.com/fhhs.kh.edu.tw/jhs/%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C" target="_blank">高雄復華中學</a></li>
-                <li><a href="https://affairs.kh.edu.tw/824" target="_blank">高雄右昌國中</a></li>
-                <li><a href="https://hakka.mtjh.kh.edu.tw/exam/exam-section.htm#top" target="_blank">高雄民族國中</a></li>
-                <li><a href="https://affairs.kh.edu.tw/41/fpage/view/15" target="_blank">高雄鳳甲國中</a></li>
-                <li><a href="https://affairs.kh.edu.tw/5555" target="_blank">高雄鹽埕國中</a></li>
-                
-            </ul>
+                <div class="city-title">臺中市</div>
+                <ul class="school-list">
+                    <li><a href="https://wcjh.tc.edu.tw/p/412-1106-9280.php" target="_blank">臺中五權國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1vK7V7tfRNuo_QtpN25txC1pqFmuupIo3" target="_blank">臺中崇德國中</a></li>
+                    <li><a href="https://sites.google.com/syjhs.tc.edu.tw/2020test/%E9%A6%96%E9%A0%81" target="_blank">臺中四育國中</a></li>
+                    <li><a href="https://sites.google.com/mail.dyjh.tc.edu.tw/test-memory-new/%E6%AD%B7%E5%B1%86%E8%A9%A6%E9%A1%8C%E4%B8%8B%E8%BC%89" target="_blank">臺中大業國中</a></li>
+                    <li><a href="https://hsjh.tc.edu.tw/p/412-1103-8469.php" target="_blank">臺中向上國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1GtDWaM-GeRDJCt1Dv3kh2QG-X6MA8nPL" target="_blank">臺中光明國中</a></li>
+                </ul>
+            </div>
+
+            <div class="city-group">
+                <div class="city-title">高雄市</div>
+                <ul class="school-list">
+                    <li><a href="https://affairs.kh.edu.tw/5365" target="_blank">高雄五福國中</a></li>
+                    <li><a href="https://affairs.kh.edu.tw/4338" target="_blank">高雄七賢國中</a></li>
+                    <li><a href="http://163.16.246.199/s11/board_exam/find.asp?pyear=114" target="_blank">高雄陽明國中</a></li>
+                    <li><a href="https://drive.google.com/drive/folders/1ldk6MtVSNgQi6pVODaQB0-XL3m0HkvZn" target="_blank">高雄英明國中</a></li>
+                    <li><a href="https://affairs.kh.edu.tw/3850/upload/upload_list/16" target="_blank">高雄龍華國中</a></li>
+                    <li><a href="https://affairs.kh.edu.tw/4567" target="_blank">高雄立德國中</a></li>
+                    <li><a href="https://sites.google.com/fhhs.kh.edu.tw/jhs/%E6%AE%B5%E8%80%83%E8%A9%A6%E9%A1%8C" target="_blank">高雄復華中學</a></li>
+                    <li><a href="https://affairs.kh.edu.tw/824" target="_blank">高雄右昌國中</a></li>
+                    <li><a href="https://hakka.mtjh.kh.edu.tw/exam/exam-section.htm#top" target="_blank">高雄民族國中</a></li>
+                    <li><a href="https://affairs.kh.edu.tw/41/fpage/view/15" target="_blank">高雄鳳甲國中</a></li>
+                    <li><a href="https://affairs.kh.edu.tw/5555" target="_blank">高雄鹽埕國中</a></li>
+                </ul>
+            </div>
         </div>
 
         <div class="pdf-section">
@@ -248,7 +244,6 @@
     </footer>
 
     <script>
-        // 載入導航列並標記目前頁面
         async function loadNavbar() {
             try {
                 const response = await fetch('navbar.html');
