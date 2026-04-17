@@ -63,38 +63,45 @@
             margin-right: 10px;
         }
 
-        /* 4. 學校連結列表樣式 - 橫向排列並貼合文字 */
-        .school-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;       /* 改用 flex 讓元件橫向排列 */
-            flex-wrap: wrap;    /* 寬度不足時自動換行 */
-            gap: 10px;          /* 方塊間距 */
-        }
+        /* 4. 學校連結列表樣式 - 固定寬度並網格對齊 */
+.school-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    /* 關鍵：設定每個框框固定為 140px，並自動填滿整行 */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;          /* 方塊之間的間距 */
+}
 
-        .school-list li {
-            background: #f9f9f9;
-            padding: 6px 12px; 
-            border-radius: 4px;
-            border: 1px solid #eee;
-            transition: 0.3s;
-            text-align: center;
-        }
+.school-list li {
+    background: #f9f9f9;
+    /* 增加上下內邊距，讓框框看起來大一點 */
+    padding: 10px 5px; 
+    border-radius: 4px;
+    border: 1px solid #eee;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 45px;   /* 設定最小高度，確保框框大小一致 */
+}
 
-        .school-list li:hover {
-            background: #fff;
-            border-color: #cc0000;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-            transform: translateY(-2px);
-        }
+.school-list li:hover {
+    background: #fff;
+    border-color: #cc0000;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+}
 
-        .school-list li a {
-            color: #0056b3;
-            text-decoration: none;
-            font-size: 1em;
-            display: block;
-        }
+.school-list li a {
+    color: #0056b3;
+    text-decoration: none;
+    font-size: 0.95em;   /* 稍微調小字體，確保長校名不會換行 */
+    display: block;
+    width: 100%;
+    text-align: center;
+}
 
         .school-list li a:hover {
             color: #cc0000;
