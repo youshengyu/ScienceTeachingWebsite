@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伽利略木星衛星與簡諧運動教學模擬器</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        space: {
+                            900: '#070913',
+                            800: '#0f172a',
+                            700: '#1e293b',
+                            600: '#334155'
+                        },
+                        jupiter: {
+                            gold: '#d97706',
+                            amber: '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+        ]
+    });"></script>
+
+    <style>
+        body { font-family: 'Inter', 'Noto Sans TC', sans-serif; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="bg-space-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-slate-900">
+
+    <!-- 頂部導覽列 -->
+    <header class="glass-panel sticky top-0 z-50 px-4 py-3 border-b border-slate-800 flex flex-wrap items-center justify-between shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                <i class="fa-solid fa-moon text-slate-950 text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg text-slate-100 flex items-center gap-2">
+                    伽利略木星衛星與簡諧運動模擬器
+                    <span class="text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-full font-normal">教學備課版</span>
+                </h1>
+                <p class="text-xs text-slate-400">連結等速圓周運動與一維簡諧運動 ($x(t) = R \cos(\omega t + \phi)$)</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2 mt-2 sm:mt-0">
+            <button onclick="openModal('guideModal')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-book-open"></i> 教學指引
+            </button>
+            <button onclick="openModal('notebookModal')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 border border-slate-700 rounded-lg text-sm font-medium transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-book-bookmark"></i> 伽利略手札
+            </button>
+            <button onclick="exportState()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-slate-950 font-semibold rounded-lg text-sm transition flex items-center gap-1.5 shadow-md shadow-amber-600/20">
+                <i class="fa-solid fa-share-nodes"></i> 匯出分享
+            </button>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+        <!-- 左側控制與參數面板 (4欄) -->
+        <section class="lg:col-span-4 space-y-4">
+            <!-- 時間與播放控制 -->
+            <div class="glass-panel p-4 rounded-2xl shadow-xl">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-amber-400"></i> 時間與動畫控制
+                </h2>
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <button id="playPauseBtn" onclick="togglePlay()" class="col-span-2 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
+                        <i id="playPauseIcon" class="fa-solid fa-pause"></i> <span id="playPauseText">暫停</span>
+                    </button>
+                    <button onclick="resetSimulation()" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center justify-center gap-1 font-medium">
+                        <i class="fa-solid fa-rotate-left text-xs"></i> 重設
+                    </button>
+                    <button onclick="stepForward()" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl transition flex items-center justify-center gap-1 font-medium" title="單步前進（約0.2天）">
+                        <i class="fa-solid fa-forward-step text-xs"></i> 步進
+                    </button>
+                </div>
+
+                <!-- 模擬速度調節 -->
+                <div class="space-y-1.5 mb-4">
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span>模擬速度 (天/秒)</span>
+                        <span id="speedValue" class="font-semibold text-amber-400">1.0 天/秒</span>
+                    </div>
+                    <input type="range" id="speedRange" min="0.1" max="5.0" step="0.1" value="1.0" oninput="updateSpeed(this.value)" class="w-full accent-amber-500 bg-slate-800 h-2 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- 模擬日期顯示 -->
+                <div class="bg-space-800/80 p-3 rounded-xl border border-slate-700/50 flex items-center justify-between">
+                    <span class="text-xs text-slate-400"><i class="fa-regular fa-calendar-days mr-1 text-amber-400"></i> 模擬天數：</span>
+                    <span id="dayCounter" class="font-mono font-bold text-amber-400 text-base">Day 0.0</span>
+                </div>
+            </div>
+
+            <!-- 顯示視圖與圖層選項 -->
+            <div class="glass-panel p-4 rounded-2xl shadow-xl">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-eye text-amber-400"></i> 視圖與投影切換
+                </h2>
+                <div class="grid grid-cols-2 gap-2 mb-4">
+                    <button id="viewBothBtn" onclick="setViewMode('both')" class="py-2 px-3 bg-amber-500 text-slate-950 font-semibold rounded-xl text-xs transition shadow-sm">
+                        上下同步對照
+                    </button>
+                    <button id="viewSHMBtn" onclick="setViewMode('shm')" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium rounded-xl text-xs transition">
+                        單純簡諧波(側視)
+                    </button>
+                </div>
+
+                <div class="space-y-2 text-sm border-t border-slate-800 pt-3">
+                    <label class="flex items-center justify-between cursor-pointer p-1.5 hover:bg-slate-800/50 rounded-lg">
+                        <span class="text-slate-300 text-xs flex items-center gap-2"><i class="fa-solid fa-wave-square text-sky-400 w-4"></i> 顯示正弦波曲線 (Position-Time)</span>
+                        <input type="checkbox" id="showWaveToggle" checked onchange="toggleOption('showWave')" class="w-4 h-4 accent-amber-500 rounded bg-slate-800 border-slate-700">
+                    </label>
+                    <label class="flex items-center justify-between cursor-pointer p-1.5 hover:bg-slate-800/50 rounded-lg">
+                        <span class="text-slate-300 text-xs flex items-center gap-2"><i class="fa-solid fa-link text-emerald-400 w-4"></i> 投影對齊輔助虛線</span>
+                        <input type="checkbox" id="showLinesToggle" checked onchange="toggleOption('showLines')" class="w-4 h-4 accent-amber-500 rounded bg-slate-800 border-slate-700">
+                    </label>
+                    <label class="flex items-center justify-between cursor-pointer p-1.5 hover:bg-slate-800/50 rounded-lg">
+                        <span class="text-slate-300 text-xs flex items-center gap-2"><i class="fa-solid fa-circle-dot text-amber-400 w-4"></i> 顯示軌道圓周痕跡</span>
+                        <input type="checkbox" id="showOrbitsToggle" checked onchange="toggleOption('showOrbits')" class="w-4 h-4 accent-amber-500 rounded bg-slate-800 border-slate-700">
+                    </label>
+                    <label class="flex items-center justify-between cursor-pointer p-1.5 hover:bg-slate-800/50 rounded-lg">
+                        <span class="text-slate-300 text-xs flex items-center gap-2"><i class="fa-solid fa-earth-americas text-indigo-400 w-4"></i> 木星掩星陰影（背面遮擋）</span>
+                        <input type="checkbox" id="showEclipseToggle" checked onchange="toggleOption('showEclipse')" class="w-4 h-4 accent-amber-500 rounded bg-slate-800 border-slate-700">
+                    </label>
+                </div>
+            </div>
+
+            <!-- 衛星參數微調面板 -->
+            <div class="glass-panel p-4 rounded-2xl shadow-xl">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-amber-400"></i> 衛星物理參數微調
+                </h2>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-300 font-medium flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-red-400 inline-block"></span> 埃歐 (Io) 週期</span>
+                            <span id="periodIo" class="text-amber-400 font-mono">1.8 天</span>
+                        </div>
+                        <input type="range" min="1.0" max="5.0" step="0.1" value="1.77" oninput="updateMoonParam('io', 'period', this.value)" class="w-full accent-red-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-300 font-medium flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400 inline-block"></span> 歐羅巴 (Europa) 週期</span>
+                            <span id="periodEuropa" class="text-amber-400 font-mono">3.6 天</span>
+                        </div>
+                        <input type="range" min="2.0" max="8.0" step="0.1" value="3.55" oninput="updateMoonParam('europa', 'period', this.value)" class="w-full accent-sky-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-300 font-medium flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> 加尼米德 (Ganymede) 週期</span>
+                            <span id="periodGanymede" class="text-amber-400 font-mono">7.2 天</span>
+                        </div>
+                        <input type="range" min="4.0" max="15.0" step="0.2" value="7.15" oninput="updateMoonParam('ganymede', 'period', this.value)" class="w-full accent-emerald-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-slate-300 font-medium flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span> 卡利斯多 (Callisto) 週期</span>
+                            <span id="periodCallisto" class="text-amber-400 font-mono">16.7 天</span>
+                        </div>
+                        <input type="range" min="8.0" max="30.0" step="0.5" value="16.69" oninput="updateMoonParam('callisto', 'period', this.value)" class="w-full accent-amber-400 bg-slate-800 h-1.5 rounded-lg cursor-pointer">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 右側畫布與視覺化呈現區 (8欄) -->
+        <section class="lg:col-span-8 flex flex-col space-y-4">
+            <!-- Canvas 容器 -->
+            <div class="glass-panel p-3 rounded-2xl shadow-xl flex-1 flex flex-col relative overflow-hidden">
+                <div class="absolute top-4 left-4 z-10 flex items-center gap-2 bg-space-900/80 px-3 py-1.5 rounded-xl border border-slate-700/60 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="canvasStatusText" class="text-xs font-medium text-slate-300">模式：雙視圖同步 (上方：俯視軌道 | 下方：左側物理投影 | 右側：正弦波時間軌跡)</span>
+                </div>
+
+                <!-- 主畫布 -->
+                <div class="w-full flex-1 min-h-[500px] relative bg-slate-950/60 rounded-xl overflow-hidden border border-slate-800/80">
+                    <canvas id="simCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+                </div>
+
+                <!-- 圖表說明下方提示 -->
+                <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div class="bg-space-800/60 p-2 rounded-xl border border-slate-800 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-red-400 inline-block shrink-0 shadow-sm shadow-red-400/50"></span>
+                        <div>
+                            <p class="font-bold text-slate-200">Io (埃歐)</p>
+                            <p class="text-[10px] text-slate-400">周期: <span id="labelIoPeriod">1.77</span> 天</p>
+                        </div>
+                    </div>
+                    <div class="bg-space-800/60 p-2 rounded-xl border border-slate-800 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-sky-400 inline-block shrink-0 shadow-sm shadow-sky-400/50"></span>
+                        <div>
+                            <p class="font-bold text-slate-200">Europa (歐羅巴)</p>
+                            <p class="text-[10px] text-slate-400">周期: <span id="labelEuropaPeriod">3.55</span> 天</p>
+                        </div>
+                    </div>
+                    <div class="bg-space-800/60 p-2 rounded-xl border border-slate-800 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block shrink-0 shadow-sm shadow-emerald-400/50"></span>
+                        <div>
+                            <p class="font-bold text-slate-200">Ganymede (加尼米德)</p>
+                            <p class="text-[10px] text-slate-400">周期: <span id="labelGanymedePeriod">7.15</span> 天</p>
+                        </div>
+                    </div>
+                    <div class="bg-space-800/60 p-2 rounded-xl border border-slate-800 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-amber-400 inline-block shrink-0 shadow-sm shadow-amber-400/50"></span>
+                        <div>
+                            <p class="font-bold text-slate-200">Callisto (卡利斯多)</p>
+                            <p class="text-[10px] text-slate-400">周期: <span id="labelCallistoPeriod">16.69</span> 天</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 底部版權與提示 -->
+    <footer class="max-w-7xl w-full mx-auto px-4 py-4 text-center text-xs text-slate-500 border-t border-slate-800/80">
+        <p>物理教學互動模擬器 | 適用於高級中學物理：等速圓周運動與簡諧運動 (SHM) 單元教學</p>
+    </footer>
+
+    <!-- ================= 互動對話框 (Modals) ================= -->
+
+    <!-- 1. 教學指引說明書 Modal -->
+    <div id="guideModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="glass-panel max-w-2xl w-full mx-4 rounded-2xl p-6 shadow-2xl border border-slate-700 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
+                <h3 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> 教學指引與物理概念說明
+                </h3>
+                <button onclick="closeModal('guideModal')" class="text-slate-400 hover:text-slate-100 p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-sm text-slate-300 leading-relaxed">
+                <div class="bg-space-800/80 p-3 rounded-xl border border-slate-700">
+                    <h4 class="font-bold text-amber-300 mb-1">💡 核心教學概念：圓周運動的水平投影即為簡諧運動</h4>
+                    <p class="text-xs text-slate-400">當衛星繞木星作等速圓周運動時，半徑為 $R$、角速度為 $\omega$。若我們從正側面（地球觀測視角）觀察，其在水平軸線 $x$ 座標上的投影位置為：<br>
+                    <div class="text-amber-400 font-mono text-center my-2">$x(t) = R \cos(\omega t + \phi)$</div>
+                    這正是標準的一維簡諧運動方程式！振幅 $R$ 等於軌道半徑，週期 $T = \frac{2\pi}{\omega}$。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-200 mb-1">🔭 歷史教育意義 (1610年 伽利略的突破)</h4>
+                    <p class="text-xs text-slate-400">伽利略在1610年利用自製望遠鏡連續多日觀測木星，發現四顆小星在木星左右兩側規律地來回擺動（即投影簡諧運動）。有時衛星會跑到木星背後消失（掩星）或進入木星陰影（凌影）。這個發現直接挑戰了當時的「地心說」，證明並非所有天體都繞地球運轉。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-200 mb-1">👩‍🏫 課堂操作建議</h4>
+                    <ul class="list-disc list-inside text-xs text-slate-400 space-y-1">
+                        <li><strong>步驟一</strong>：先開啟「上下同步對照」，讓學生觀察上方圓周運動與下方正弦波曲線的對應關係。</li>
+                        <li><strong>步驟二</strong>：切換到「伽利略手札」模式，展示歷史觀測日誌，讓學生嘗試像伽利略一樣解讀圖表。</li>
+                        <li><strong>步驟三</strong>：透過參數微調改變週期，探討週期與正弦波波長（時間軸上波峰間距）的數學關係。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal('guideModal')" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold rounded-xl text-sm transition">
+                    了解，開始教學
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. 伽利略手札模式 Modal -->
+    <div id="notebookModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm hidden">
+        <div class="glass-panel max-w-3xl w-full mx-4 rounded-2xl p-6 shadow-2xl border border-slate-700 max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
+                <h3 class="text-lg font-bold text-sky-400 flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> 1610年 伽利略觀測手札 (Sidereus Nuncius)
+                </h3>
+                <button onclick="closeModal('notebookModal')" class="text-slate-400 hover:text-slate-100 p-1 rounded-lg">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-sm text-slate-300">
+                <p class="text-xs text-slate-400">下表模擬了伽利略在 1610 年 1 月連續數晚記錄木星與四顆衛星（以 * 代表木星，數字代表相對左右位置）的手繪日誌：</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-space-800 text-amber-400 border-b border-slate-700">
+                                <th class="p-2.5">觀測日期</th>
+                                <th class="p-2.5 text-center">西側 (-) ⬅️</th>
+                                <th class="p-2.5 text-center">木星 (*)</th>
+                                <th class="p-2.5 text-center">➡️ 東側 (+)</th>
+                                <th class="p-2.5">伽利略當時推論筆記</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 font-mono text-slate-300">
+                            <tr>
+                                <td class="p-2.5 text-amber-300 font-bold">1月 7日</td>
+                                <td class="p-2.5 text-center">・ ・</td>
+                                <td class="p-2.5 text-center text-amber-400 font-bold">＊</td>
+                                <td class="p-2.5 text-center">・</td>
+                                <td class="p-2.5 font-sans text-xs text-slate-400">發現三顆恆星排列在木星同側。</td>
+                            </tr>
+                            <tr class="bg-space-800/40">
+                                <td class="p-2.5 text-amber-300 font-bold">1月 8日</td>
+                                <td class="p-2.5 text-center"></td>
+                                <td class="p-2.5 text-center text-amber-400 font-bold">＊</td>
+                                <td class="p-2.5 text-center">・ ・ ・</td>
+                                <td class="p-2.5 font-sans text-xs text-slate-400">位置改變！全部移至木星另一側。</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2.5 text-amber-300 font-bold">1月 10日</td>
+                                <td class="p-2.5 text-center">・</td>
+                                <td class="p-2.5 text-center text-amber-400 font-bold">＊</td>
+                                <td class="p-2.5 text-center">・</td>
+                                <td class="p-2.5 font-sans text-xs text-slate-400">其中一顆似乎躲到木星背後。</td>
+                            </tr>
+                            <tr class="bg-space-800/40">
+                                <td class="p-2.5 text-amber-300 font-bold">1月 11日</td>
+                                <td class="p-2.5 text-center">・ ・</td>
+                                <td class="p-2.5 text-center text-amber-400 font-bold">＊</td>
+                                <td class="p-2.5 text-center"></td>
+                                <td class="p-2.5 font-sans text-xs text-slate-400">確認星體以固定週期繞行木星。</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-space-800 p-3 rounded-xl border border-slate-700/80 text-xs text-slate-300">
+                    <p class="font-bold text-sky-300 mb-1">✨ 教學互動引導問答：</p>
+                    <p>「為什麼這些小星不會永遠離木星而去，而總是在一定範圍內左右來回？」<br>👉 <span class="text-slate-400">這正是因為它們做的是<strong>圓周運動</strong>，我們從側面看過去就形成了<strong>簡諧運動</strong>的往復軌跡！</span></p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal('notebookModal')" class="px-4 py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold rounded-xl text-sm transition">
+                    關閉手札
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 狀態通知 Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 glass-panel px-4 py-3 rounded-xl border border-amber-500/30 text-amber-300 text-xs shadow-2xl transition-all duration-300 translate-y-20 opacity-0 flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-amber-400 text-sm"></i>
+        <span id="toastText">狀態已更新</span>
+    </div>
+
+    <!-- ================= 模擬核心 JavaScript ================= -->
+    <script>
+        // 模擬狀態與物理參數
+        let isPlaying = true;
+        let simDays = 0;
+        let timeSpeed = 1.0; // 天數/秒
+        let viewMode = 'both'; // 'both' 或 'shm'
+        
+        let options = {
+            showWave: true,
+            showLines: true,
+            showOrbits: true,
+            showEclipse: true
+        };
+
+        // 四顆伽利略衛星數據 (半徑單位：像素對應值, 週期單位：地球日)
+        const moons = [
+            { id: 'io', name: 'Io (埃歐)', radius: 65, period: 1.769, color: '#f87171', size: 6, angle: 0 },
+            { id: 'europa', name: 'Europa (歐羅巴)', radius: 100, period: 3.551, color: '#38bdf8', size: 7, angle: 1.5 },
+            { id: 'ganymede', name: 'Ganymede (加尼米德)', radius: 145, period: 7.155, color: '#34d399', size: 9, angle: 3.0 },
+            { id: 'callisto', name: 'Callisto (卡利斯多)', radius: 195, period: 16.689, color: '#fbbf24', size: 8, angle: 4.5 }
+        ];
+
+        // Canvas 設定
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        let lastTimestamp = 0;
+
+        // 初始化與調整大小
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        }
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            requestAnimationFrame(gameLoop);
+        });
+
+        // 動畫主循環
+        function gameLoop(timestamp) {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const deltaTime = (timestamp - lastTimestamp) / 1000; // 秒
+            lastTimestamp = timestamp;
+
+            if (isPlaying) {
+                // 每秒推進 timeSpeed 天
+                simDays += timeSpeed * deltaTime;
+                document.getElementById('dayCounter').innerText = `Day ${simDays.toFixed(2)}`;
+            }
+
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // 渲染核心
+        function render() {
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+
+            ctx.clearRect(0, 0, width, height);
+
+            if (viewMode === 'both') {
+                // 雙視圖：上方 48% 圓周運動，下方 52% 簡諧與正弦波運動
+                const topCenter = { x: width / 2, y: height * 0.26 };
+                const bottomY = height * 0.72;
+                const bottomCenterX = width / 2;
+
+                drawOrbitalView(topCenter.x, topCenter.y);
+                drawSHMView(bottomCenterX, bottomY, width);
+
+                // 畫中間分隔線
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(30, height * 0.49);
+                ctx.lineTo(width - 30, height * 0.49);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+            } else {
+                // 單純簡諧運動側視圖滿版
+                drawSHMView(width / 2, height * 0.5, width, true);
+            }
+        }
+
+        // 1. 繪製上方俯視圓周運動視圖
+        function drawOrbitalView(cx, cy) {
+            ctx.fillStyle = 'rgba(255,255,255,0.04)';
+            ctx.font = '11px Inter';
+            ctx.fillText('【空間視圖】木星與四衛星等速圓周運動 (俯視)', 20, 22);
+
+            // 木星本體 (俯視)
+            const jupiterGrad = ctx.createRadialGradient(cx - 5, cy - 5, 2, cx, cy, 16);
+            jupiterGrad.addColorStop(0, '#f59e0b');
+            jupiterGrad.addColorStop(1, '#92400e');
+            ctx.fillStyle = jupiterGrad;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 繪製各衛星軌道與圓周運動
+            moons.forEach(moon => {
+                const omega = (2 * Math.PI) / moon.period;
+                const currentAngle = moon.angle + omega * simDays;
+
+                // 軌道圓 (橢圓模擬視角)
+                if (options.showOrbits) {
+                    ctx.strokeStyle = moon.color + '33';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.ellipse(cx, cy, moon.radius, moon.radius * 0.35, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                // 衛星在俯視軌道上的座標
+                const x = cx + moon.radius * Math.cos(currentAngle);
+                const y = cy + (moon.radius * 0.35) * Math.sin(currentAngle);
+
+                // 判斷是否在木星背面
+                const isBehind = Math.sin(currentAngle) > 0 && options.showEclipse;
+                if (isBehind) {
+                    ctx.globalAlpha = 0.3;
+                }
+
+                // 繪製衛星
+                ctx.fillStyle = moon.color;
+                ctx.beginPath();
+                ctx.arc(x, y, moon.size * 0.8, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 標籤
+                ctx.fillStyle = '#cbd5e1';
+                ctx.font = '10px Inter';
+                ctx.fillText(moon.name.split(' ')[0], x + 8, y - 4);
+
+                ctx.globalAlpha = 1.0;
+            });
+        }
+
+        // 2. 繪製下方地球側視投影與簡諧運動波形 (左右完全分離)
+        function drawSHMView(cx, cy, width, isFull = false) {
+            if (!isFull) {
+                ctx.fillStyle = 'rgba(255,255,255,0.04)';
+                ctx.font = '11px Inter';
+                ctx.fillText('【投影視圖】左側：木星側視一維簡諧運動投影   |   右側：對應的正弦波時間軌跡', 20, isFull ? 22 : (canvas.clientHeight * 0.53 + 18));
+            } else {
+                ctx.fillStyle = 'rgba(255,255,255,0.04)';
+                ctx.font = '11px Inter';
+                ctx.fillText('【投影視圖】木星側視一維簡諧運動與時間軸正弦波軌跡', 20, 22);
+            }
+
+            // 將左側物理投影中心向右移，使衛星名稱有足夠空間顯示在左側
+            const leftPhysicsX = width * 0.28;
+            const rightWaveStartX = width * 0.52;
+            const rightWaveEndX = width - 40;
+
+            // 畫中央木星 (側視條狀) 於左側物理區
+            const jupiterGrad = ctx.createRadialGradient(leftPhysicsX - 3, cy - 3, 1, leftPhysicsX, cy, 14);
+            jupiterGrad.addColorStop(0, '#f59e0b');
+            jupiterGrad.addColorStop(1, '#78350f');
+            ctx.fillStyle = jupiterGrad;
+            ctx.beginPath();
+            ctx.arc(leftPhysicsX, cy, 13, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = 'bold 11px Inter';
+            ctx.fillText('木星 (Jupiter)', leftPhysicsX - 34, cy - 18);
+
+            // 分隔線：區分左側物理投影與右側時間波形圖
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(rightWaveStartX - 25, cy - 130);
+            ctx.lineTo(rightWaveStartX - 25, cy + 130);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // 畫各衛星的簡諧運動軸線與波形
+            moons.forEach((moon, index) => {
+                const rowY = isFull ? (cy + (index - 1.5) * 65) : (cy + (index - 1.5) * 30);
+                const omega = (2 * Math.PI) / moon.period;
+                const currentAngle = moon.angle + omega * simDays;
+
+                // 簡諧運動水平位移：x = R * cos(wt)
+                const scaleFactor = 0.55;
+                const displacement = moon.radius * scaleFactor * Math.cos(currentAngle);
+                const moonX = leftPhysicsX + displacement;
+
+                // 判斷是否在木星背面
+                const isBehind = Math.sin(currentAngle) > 0 && options.showEclipse;
+
+                // 左側物理投影：畫往復運動軸線
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(leftPhysicsX - moon.radius * scaleFactor - 10, rowY);
+                ctx.lineTo(leftPhysicsX + moon.radius * scaleFactor + 10, rowY);
+                ctx.stroke();
+
+                // 右側：畫正弦波歷史軌跡 (Position vs Time)，向右延伸
+                if (options.showWave) {
+                    ctx.strokeStyle = moon.color + 'aa';
+                    ctx.lineWidth = 1.8;
+                    ctx.beginPath();
+                    for (let px = rightWaveStartX; px <= rightWaveEndX; px += 3) {
+                        const timeOffset = (px - rightWaveStartX) / 12; 
+                        const pastDays = simDays - timeOffset;
+                        if (pastDays >= 0) {
+                            const pastAngle = moon.angle + omega * pastDays;
+                            const pastDisp = moon.radius * scaleFactor * Math.cos(pastAngle);
+                            const py = rowY + pastDisp * 0.32;
+                            if (px === rightWaveStartX) ctx.moveTo(px, py);
+                            else ctx.lineTo(px, py);
+                        }
+                    }
+                    ctx.stroke();
+
+                    // 在右側波形起點畫即時對應點
+                    const currentPy = rowY + displacement * 0.32;
+                    ctx.fillStyle = moon.color;
+                    ctx.beginPath();
+                    ctx.arc(rightWaveStartX, currentPy, 3, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 繪製從左側物理衛星到右側波形起點的引導虛線
+                    if (options.showLines) {
+                        ctx.strokeStyle = moon.color + '33';
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([2, 2]);
+                        ctx.beginPath();
+                        ctx.moveTo(moonX, rowY);
+                        ctx.lineTo(rightWaveStartX, currentPy);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                }
+
+                // 繪製左側物理投影衛星點
+                if (isBehind) {
+                    ctx.globalAlpha = 0.25;
+                }
+
+                ctx.fillStyle = moon.color;
+                ctx.beginPath();
+                ctx.arc(moonX, rowY, moon.size * 0.9, 0, Math.PI * 2);
+                ctx.fill();
+
+                // 衛星名稱標籤固定顯示在畫布左側固定寬度處，與木星拉開安全距離
+                ctx.fillStyle = '#94a3b8';
+                ctx.font = '10px Inter';
+                ctx.fillText(moon.name, width * 0.05, rowY - 5);
+
+                ctx.globalAlpha = 1.0;
+            });
+        }
+
+        // ================= 互動控制函數 =================
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const icon = document.getElementById('playPauseIcon');
+            const text = document.getElementById('playPauseText');
+            if (isPlaying) {
+                icon.className = 'fa-solid fa-pause';
+                text.innerText = '暫停';
+                showToast('模擬已繼續');
+            } else {
+                icon.className = 'fa-solid fa-play';
+                text.innerText = '播放';
+                showToast('模擬已暫停');
+            }
+        }
+
+        function resetSimulation() {
+            simDays = 0;
+            document.getElementById('dayCounter').innerText = 'Day 0.0';
+            showToast('模擬已重設至起始狀態');
+        }
+
+        function stepForward() {
+            simDays += 0.2;
+            document.getElementById('dayCounter').innerText = `Day ${simDays.toFixed(2)}`;
+        }
+
+        function updateSpeed(val) {
+            timeSpeed = parseFloat(val);
+            document.getElementById('speedValue').innerText = `${timeSpeed.toFixed(1)} 天/秒`;
+        }
+
+        function setViewMode(mode) {
+            viewMode = mode;
+            const btnBoth = document.getElementById('viewBothBtn');
+            const btnSHM = document.getElementById('viewSHMBtn');
+            const statusText = document.getElementById('canvasStatusText');
+
+            if (mode === 'both') {
+                btnBoth.className = 'py-2 px-3 bg-amber-500 text-slate-950 font-semibold rounded-xl text-xs transition shadow-sm';
+                btnSHM.className = 'py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium rounded-xl text-xs transition';
+                statusText.innerText = '模式：雙視圖同步 (上方：俯視軌道 | 下方：左側物理投影 | 右側：正弦波時間軌跡)';
+            } else {
+                btnSHM.className = 'py-2 px-3 bg-amber-500 text-slate-950 font-semibold rounded-xl text-xs transition shadow-sm';
+                btnBoth.className = 'py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 font-medium rounded-xl text-xs transition';
+                statusText.innerText = '模式：單純一維簡諧運動與正弦波軌跡圖';
+            }
+            showToast(`已切換視圖模式`);
+        }
+
+        function toggleOption(key) {
+            options[key] = document.getElementById(`${key}Toggle`).checked;
+            showToast(`圖層設定已更新`);
+        }
+
+        function updateMoonParam(id, param, val) {
+            const moon = moons.find(m => m.id === id);
+            if (moon && param === 'period') {
+                moon.period = parseFloat(val);
+                document.getElementById(`period${capitalize(id)}`).innerText = `${moon.period.toFixed(1)} 天`;
+                document.getElementById(`label${capitalize(id)}Period`).innerText = moon.period.toFixed(2);
+            }
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // Modal 控制
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // 匯出分享功能
+        function exportState() {
+            const shareData = {
+                title: '伽利略木星衛星與簡諧運動模擬',
+                text: `我在使用物理教學模擬器，目前模擬天數：Day ${simDays.toFixed(1)}。快來一起探討圓周運動與簡諧運動的關係吧！`,
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).catch(() => {});
+            } else {
+                const dummy = document.createElement('textarea');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                showToast('網址已成功複製到剪貼簿，可直接分享！');
+            }
+        }
+
+        // Toast 提示框
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastText').innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
